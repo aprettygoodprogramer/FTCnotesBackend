@@ -1,11 +1,9 @@
 use axum::{
-    Json, Router,
-    extract::{Path, State},
-    http::{HeaderValue, Method, StatusCode},
-    response::IntoResponse,
+    Router,
+    http::{HeaderValue, Method},
     routing::{delete, get, post},
 };
-use sqlx::{PgPool, postgres::PgPoolOptions};
+use sqlx::postgres::PgPoolOptions;
 use tokio::net::TcpListener;
 use tower_http::cors::{Any, CorsLayer};
 

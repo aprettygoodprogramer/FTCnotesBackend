@@ -5,7 +5,7 @@ use axum::{
     http::StatusCode,
     response::IntoResponse,
 };
-use sqlx::{Error, Row};
+use sqlx::Row;
 
 pub async fn get_events(State(app_state): State<models::AppState>) -> impl IntoResponse {
     let events = sqlx::query_as::<_, models::Event>("SELECT * FROM events")
