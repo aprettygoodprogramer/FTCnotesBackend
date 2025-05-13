@@ -36,6 +36,7 @@ async fn main() {
         .route("/events", get(handlers::get_events))
         .route("/create-event", post(handlers::create_event))
         .route("/delete-event/{event_id}", delete(handlers::delete_event))
+        .route("/teams", post(handlers::create_team))
         .layer(cors)
         .with_state(app_state);
 
