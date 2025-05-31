@@ -40,6 +40,7 @@ async fn main() {
         .route("/events/{event_id}/teams", get(handlers::get_teams_for_event))
         .route("/teams", post(handlers::create_team))
         .route("/teams/{event_id}", get(handlers::get_teams_for_event))
+        .route("/team/{team_id}", get(handlers::get_team)) -
         .layer(cors)
         .with_state(app_state);
 
