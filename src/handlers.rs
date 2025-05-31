@@ -18,7 +18,7 @@ pub async fn get_events(
     match events {
         Ok(evts) => Json(evts).into_response(),
         Err(err) => {
-            eprintln!("Error fetching events: {:?}", err);
+            eprintln("Error fetching events: {:?}", err);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Failed to fetch events",
@@ -32,7 +32,7 @@ pub async fn create_event(
     State(app_state): State<models::AppState>,
     Json(event): Json<models::CreateEvent>,
 ) -> impl IntoResponse {
-    let result = sqlx::query!(
+    let result = sqlx::query(
         r#"
         INSERT INTO events (name, date, location)
         VALUES ($1, $2, $3)
@@ -50,12 +50,12 @@ pub async fn create_event(
             let event_id: i32 = row.event_id;
             (
                 StatusCode::CREATED,
-                format!("Event created with ID: {}", event_id),
+                format("Event created with ID: {}", event_id),
             )
                 .into_response()
         }
         Err(err) => {
-            eprintln!("Error creating event: {:?}", err);
+            eprintln("Error creating event: {:?}", err);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Failed to create event",
@@ -69,7 +69,7 @@ pub async fn delete_event(
     State(app_state): State<models::AppState>,
     Path(event_id): Path<i32>,
 ) -> impl IntoResponse {
-    let result = sqlx::query!(
+    let result = sqlx::query(
         "DELETE FROM events WHERE event_id = $1",
         event_id
     )
@@ -82,7 +82,7 @@ pub async fn delete_event(
         }
         Ok(_) => (StatusCode::NOT_FOUND, "Event not found").into_response(),
         Err(err) => {
-            eprintln!("Error deleting event: {:?}", err);
+            eprintln("Error deleting event: {:?}", err);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Failed to delete event",
@@ -96,7 +96,7 @@ pub async fn create_team(
     State(app_state): State<models::AppState>,
     Json(team): Json<models::CreateTeam>,
 ) -> impl IntoResponse {
-    let result = sqlx::query!(
+    let result = sqlx::query(
         r#"
         INSERT INTO teams (event_id, date_created, name, content)
         VALUES ($1, $2, $3, $4)
@@ -115,12 +115,12 @@ pub async fn create_team(
             let team_id: i32 = row.team_id;
             (
                 StatusCode::CREATED,
-                format!("Team created with ID: {}", team_id),
+                format("Team created with ID: {}", team_id),
             )
                 .into_response()
         }
         Err(err) => {
-            eprintln!("Error creating team: {:?}", err);
+            eprintln("Error creating team: {:?}", err);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Failed to create team",
@@ -145,7 +145,7 @@ pub async fn get_team(
         Ok(Some(team)) => Json(team).into_response(),
         Ok(None) => (StatusCode::NOT_FOUND, "Team not found").into_response(),
         Err(err) => {
-            eprintln!("Error fetching team: {:?}", err);
+            eprintln("Error fetching team: {:?}", err);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Failed to fetch team",
@@ -170,7 +170,7 @@ pub async fn get_teams_for_event(
     match teams {
         Ok(list) => Json(list).into_response(),
         Err(err) => {
-            eprintln!("Error fetching teams for event {}: {:?}", event_id, err);
+            eprintln("Error fetching teams for event {}: {:?}", event_id, err);
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "Failed to fetch teams",
